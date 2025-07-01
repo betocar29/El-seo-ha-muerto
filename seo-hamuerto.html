@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: EL SEO HA MUERTO? (Estilo Esmeralda)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0D0D0D;
+            color: #E5E7EB;
+        }
+        .glass-card {
+            background-color: rgba(31, 41, 55, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .emerald-text {
+            color: #10B981;
+        }
+        .emerald-glow {
+            text-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .strategy-card {
+            background-color: rgba(31, 41, 55, 0.4);
+            border-left: 4px solid #10B981;
+            transition: all 0.3s ease;
+        }
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(31, 41, 55, 0.6);
+        }
+        .quote-card {
+            border-left: 4px solid #10B981;
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+        /* Estilos para el buscador interactivo */
+        .search-demo-container {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            background: #0d121c;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .fake-search-bar {
+            background: #1F2937;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            position: relative;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+        }
+        .fake-search-bar::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: 25%;
+            width: 50px;
+            height: 50px;
+            background: #10B981;
+            filter: blur(50px);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        #search-text-container {
+            color: #E5E7EB;
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            min-height: 24px;
+        }
+        .cursor {
+            animation: blink 1s step-end infinite;
+            color: #10B981;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .ai-overview-box {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            visibility: hidden;
+        }
+        .ai-overview-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-4 relative inline-block">
+                <span class="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 text-2xl md:text-4xl text-gray-600 font-normal">¿</span>
+                EL SEO HA MUERTO
+                <span class="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 text-2xl md:text-4xl text-gray-600 font-normal">?</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-4xl mx-auto">Google redefine la búsqueda con los <span class="emerald-text font-bold">AI Overviews</span>. Descubre la nueva estrategia para dominar el ecosistema.</p>
+            
+            <!-- Buscador Interactivo -->
+            <div class="search-demo-container">
+                <h2 class="text-2xl font-bold text-center mb-6 emerald-text emerald-glow">Ejemplo de qué es un AI'Ovw</h2>
+                <div class="fake-search-bar">
+                    <div id="search-text-container"></div>
+                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <div id="ai-results" class="ai-overview-box">
+                    <div class="flex items-start space-x-3">
+                        <!-- Ícono de estrella actualizado -->
+                        <svg class="w-6 h-6 text-emerald-400 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"></path></svg>
+                        <div>
+                            <h3 class="font-bold text-white">Visión general creada por IA</h3>
+                            <p class="text-gray-300 mt-2">En Nicaragua, algunas de las agencias de publicidad y marketing digital más reconocidas incluyen a <strong class="text-emerald-400">Seonet, S7ETE Agencia Creativa, y Plan UP.</strong> Estas agencias ofrecen una variedad de servicios, desde diseño web y SEO hasta gestión de redes sociales y campañas publicitarias en plataformas como Google y Facebook.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-3 glass-card rounded-xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-white mb-4 text-center">La Nueva Realidad: <span class="emerald-text emerald-glow">Fragmentos de Información</span></h2>
+                <p class="text-center text-gray-400 mb-8 max-w-3xl mx-auto">La IA de Google ya no busca "la mejor página", sino los "mejores fragmentos". Combina definiciones, foros y datos de múltiples dominios para crear su respuesta.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="glass-card rounded-lg p-6 shadow-md flex flex-col justify-center border-t border-white/10">
+                        <div class="text-5xl font-extrabold emerald-text emerald-glow">NO</div>
+                        <div class="text-gray-300 mt-2">¿Los AI Overviews reemplazan al SEO? No, lo transforman profundamente.</div>
+                    </div>
+                    <div class="glass-card rounded-lg p-6 shadow-md flex flex-col justify-center border-t border-white/10">
+                        <div class="text-5xl font-extrabold emerald-text emerald-glow">46.5%</div>
+                        <div class="text-gray-300 mt-2">De las fuentes citadas en AI Overviews provienen de sitios fuera del Top 50 orgánico.</div>
+                    </div>
+                    <div class="glass-card rounded-lg p-6 shadow-md flex flex-col justify-center border-t border-white/10">
+                        <div class="text-5xl font-extrabold emerald-text emerald-glow">INTENCIÓN</div>
+                        <div class="text-gray-300 mt-2">La aparición de un AI Overview depende de la intención de búsqueda del usuario.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 glass-card rounded-xl shadow-lg p-6 md:p-8 flex flex-col lg:flex-row items-center gap-8">
+                <div class="lg:w-1/2">
+                    <h3 class="text-2xl font-bold text-white mb-4 text-center">¿Qué Activa un <span class="emerald-text">AI Overview</span>?</h3>
+                    <p class="text-center text-sm text-gray-400 mb-4">La probabilidad de que aparezca un AI Overview varía drásticamente, siendo las búsquedas informativas las más propensas a activarlos.</p>
+                    <div class="chart-container h-[300px] md:h-auto">
+                        <canvas id="triggerChart"></canvas>
+                    </div>
+                </div>
+                <div class="lg:w-1/2">
+                    <h3 class="text-2xl font-bold text-white mb-4 text-center">El Nuevo Paradigma del SEO</h3>
+                    <div class="space-y-4 text-gray-300">
+                        <p>El SEO ha madurado. Ya no es una disciplina táctica de palabras clave, sino una estratégica de <strong class="text-white">construcción de autoridad y valor genuino.</strong></p>
+                        <p>La calidad, profundidad, y confianza son las nuevas métricas del éxito.</p>
+                        <p class="font-bold text-white">El objetivo final: ser la fuente en la que confía la <span class="emerald-text">IA de Google</span> para informar a millones de usuarios.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 bg-transparent rounded-lg p-0">
+                <h2 class="text-4xl font-black text-white mb-8 text-center">Domina la Era de la IA: <span class="emerald-text emerald-glow">Tu Plan de Batalla</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h3 class="text-3xl font-bold text-gray-300 text-center">Estrategia de Contenidos 2.0</h3>
+                        <div class="strategy-card rounded-lg shadow-lg p-6 flex items-start space-x-4">
+                            <span class="text-4xl emerald-text">🎯</span>
+                            <div>
+                                <h4 class="font-bold text-lg text-white">Conviértete en la Autoridad Temática</h4>
+                                <p class="text-gray-400 text-sm">Olvida las palabras clave. Construye clústeres de contenido que demuestren un dominio total de tu nicho.</p>
+                            </div>
+                        </div>
+                        <div class="strategy-card rounded-lg shadow-lg p-6 flex items-start space-x-4">
+                            <span class="text-4xl emerald-text">💡</span>
+                            <div>
+                                <h4 class="font-bold text-lg text-white">Crea Contenido Irremplazable</h4>
+                                <p class="text-gray-400 text-sm">Publica datos originales, opiniones de expertos y fomenta el UGC. Ofrece valor que la IA no pueda replicar.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <h3 class="text-3xl font-bold text-gray-300 text-center">Optimización Técnica de Precisión</h3>
+                         <div class="strategy-card rounded-lg shadow-lg p-6 flex items-start space-x-4">
+                            <span class="text-4xl emerald-text">⚙️</span>
+                            <div>
+                                <h4 class="font-bold text-lg text-white">Habla el Idioma de la IA (Schema)</h4>
+                                <p class="text-gray-400 text-sm">Usa datos estructurados para etiquetar tu contenido. Es la forma más directa de explicarle a Google de qué trata tu página.</p>
+                            </div>
+                        </div>
+                         <div class="strategy-card rounded-lg shadow-lg p-6 flex items-start space-x-4">
+                            <span class="text-4xl emerald-text">🔗</span>
+                            <div>
+                                <h4 class="font-bold text-lg text-white">Construye Puentes de Confianza</h4>
+                                <p class="text-gray-400 text-sm">Fortalece tu enlazado. Cada enlace de calidad es un voto de confianza que la IA valora enormemente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-3 glass-card rounded-xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-white mb-6 text-center">Checklist de <span class="emerald-text">Acción Inmediata</span></h2>
+                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 rounded-lg bg-emerald-900/50">
+                        <h4 class="font-bold text-white">Auditoría E-E-A-T</h4>
+                        <p class="text-sm text-gray-300">Evalúa tus señales de Experiencia y Fiabilidad.</p>
+                    </div>
+                     <div class="p-4 rounded-lg bg-emerald-900/50">
+                        <h4 class="font-bold text-white">Contenido Pilar</h4>
+                        <p class="text-sm text-gray-300">Desarrolla contenido para las preguntas más complejas de tus clientes.</p>
+                    </div>
+                     <div class="p-4 rounded-lg bg-emerald-900/50">
+                        <h4 class="font-bold text-white">Implementar Schema</h4>
+                        <p class="text-sm text-gray-300">Añade marcado `Article` y `FAQPage` a tus publicaciones.</p>
+                    </div>
+                     <div class="p-4 rounded-lg bg-emerald-900/50">
+                        <h4 class="font-bold text-white">Revisar Enlazado</h4>
+                        <p class="text-sm text-gray-300">Fortalece tus clústeres temáticos con enlaces internos.</p>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="lg:col-span-3 space-y-6">
+                <div class="quote-card p-6 rounded-lg shadow-lg">
+                    <blockquote class="text-xl italic text-gray-200">"La calidad, profundidad y confianza no son solo buenas prácticas; son las <strong class='emerald-text'>nuevas métricas del éxito</strong> en un mundo donde tu audiencia es una IA."</blockquote>
+                </div>
+                <div class="quote-card p-6 rounded-lg shadow-lg">
+                    <blockquote class="text-xl italic text-gray-200">"La adaptación no es opcional. En el nuevo SEO, o te conviertes en la <strong class='emerald-text'>fuente de autoridad</strong>, o te vuelves invisible."</blockquote>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- Script del Gráfico ---
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const emeraldPalette = {
+            main: '#10B981',
+            dark: '#059669',
+            light: '#6EE7B7',
+            darkest: '#047857',
+            text: '#E5E7EB',
+            grid: 'rgba(229, 231, 235, 0.2)'
+        };
+
+        const triggerCtx = document.getElementById('triggerChart').getContext('2d');
+        new Chart(triggerCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Informativas', 'Comerciales', 'Transaccionales', 'Otras'],
+                datasets: [{
+                    label: "Activación de AI'Ovw por tipo de consulta (%)",
+                    data: [59, 19, 4, 18],
+                    backgroundColor: [
+                        emeraldPalette.main,
+                        emeraldPalette.dark,
+                        emeraldPalette.light,
+                        emeraldPalette.darkest,
+                    ],
+                    borderColor: '#0D0D0D',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: emeraldPalette.text,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: { callbacks: { title: tooltipTitleCallback }},
+                    title: { display: false }
+                }
+            }
+        });
+
+        // --- Script del Buscador Interactivo ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchTextContainer = document.getElementById('search-text-container');
+            const aiResultsElement = document.getElementById('ai-results');
+            const fullText = "mejores agencias de pauta digital";
+            let index = 0;
+            
+            // Crea el span para el texto y el cursor
+            const textSpan = document.createElement('span');
+            const cursorSpan = document.createElement('span');
+            cursorSpan.className = 'cursor';
+            cursorSpan.textContent = '│';
+            searchTextContainer.appendChild(textSpan);
+            searchTextContainer.appendChild(cursorSpan);
+
+            function type() {
+                if (index < fullText.length) {
+                    textSpan.textContent += fullText.charAt(index);
+                    index++;
+                    setTimeout(type, 90); // Velocidad de escritura
+                } else {
+                    // Termina la animación de escritura
+                    cursorSpan.style.display = 'none'; // Oculta el cursor
+                    
+                    // Muestra los resultados de la IA
+                    setTimeout(() => {
+                        aiResultsElement.classList.add('visible');
+                    }, 500); // Pequeña pausa antes de mostrar resultados
+                }
+            }
+            
+            // Inicia la animación después de una breve pausa
+            setTimeout(type, 1500);
+        });
+    </script>
+</body>
+</html>
